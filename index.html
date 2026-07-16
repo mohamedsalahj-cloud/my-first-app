@@ -7,24 +7,26 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
         header { background-color: #004085; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-size: 26px; font-weight: bold; letter-spacing: 1px; }
+        .logo { font-size: 26px; font-weight: bold; }
         .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
         
-        /* قسم إضافة إعلان جديد */
         .add-listing-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px; text-align: right; border-top: 4px solid #004085; }
         .add-listing-box h3 { color: #004085; margin-top: 0; font-size: 20px; }
         .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
         .form-group input, .form-group select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; width: 100%; box-sizing: border-box; }
         .form-group input:focus, .form-group select:focus { border-color: #004085; }
-        .full-width { grid-column: 1 / -1; }
-        .add-btn { background-color: #28a745; color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; display: block; width: 100%; }
+        
+        /* تنسيق خانة رفع الملفات والصور */
+        .file-input-container { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px; }
+        .file-input-container label { font-weight: bold; color: #555; font-size: 14px; }
+        .file-input-container input[type="file"] { padding: 8px; border: 1px dashed #004085; background: #f8f9fa; cursor: pointer; }
+
+        .add-btn { background-color: #28a745; color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; display: block; width: 100%; margin-top: 10px; }
         .add-btn:hover { background-color: #218838; }
 
-        /* شبكة المنتجات المعروضة */
         h2 { text-align: right; color: #2c3e50; border-bottom: 3px solid #004085; padding-bottom: 8px; display: inline-block; margin-top: 10px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 25px; margin-top: 20px; }
-        .product-card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; text-align: right; border: 1px solid #eee; transition: transform 0.2s; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .product-card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; text-align: right; border: 1px solid #eee; }
         .product-img { height: 200px; width: 100%; object-fit: cover; background-color: #eaeff2; }
         .product-info { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
         .product-title { font-size: 18px; font-weight: bold; margin: 0 0 10px 0; color: #2c3e50; min-height: 44px; }
@@ -32,16 +34,11 @@
         .status-new { background-color: #d4edda; color: #155724; }
         .status-used { background-color: #fff3cd; color: #856404; }
         .product-price { font-size: 22px; color: #e2001a; font-weight: bold; margin-bottom: 8px; }
-        .product-details { font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .product-details { font-size: 13px; color: #666; margin-bottom: 15px; }
         
-        /* أزرار الاتصال والواتساب */
         .contact-buttons { display: flex; gap: 10px; margin-top: auto; }
-        .btn-call { flex: 1; background-color: #007bff; color: white; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .btn-call:hover { background-color: #0069d9; }
-        .btn-whatsapp { flex: 1; background-color: #25d366; color: white; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .btn-whatsapp:hover { background-color: #20ba5a; }
-        
-        footer { text-align: center; margin-top: 60px; font-size: 13px; color: #888; padding: 25px; background: #fff; border-top: 1px solid #eee; }
+        .btn-call { flex: 1; background-color: #007bff; color: white; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .btn-whatsapp { flex: 1; background-color: #25d366; color: white; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -53,13 +50,12 @@
 
     <div class="container">
         
-        <!-- قسم إضافة التجهيزات والإعلانات -->
         <div class="add-listing-box">
             <h3>➕ أضف عرضاً جديداً في منصة CIAT informatique</h3>
             <div class="form-group">
-                <input type="text" id="pTitle" placeholder="اسم الجهاز أو التجهيز (مثال: حاسوب محمول HP)">
+                <input type="text" id="pTitle" placeholder="اسم الجهاز (مثال: حاسوب محمول HP)">
                 <input type="number" id="pPrice" placeholder="السعر بالدينار التونسي (د.ت)">
-                <input type="text" id="pPhone" placeholder="رقم الهاتف (مثال: 216XXXXXXXX)">
+                <input type="text" id="pPhone" placeholder="رقم الهاتف بدون فواصل (مثال: 22113344)">
                 
                 <select id="pStatus">
                     <option value="جديد">✨ جديد (Neuf)</option>
@@ -70,44 +66,30 @@
                     <option value="أريانة">أريانة</option>
                     <option value="سوسة">سوسة</option>
                     <option value="صفاقس">صفاقس</option>
-                    <option value="بنزرت">بنزرت</option>
                 </select>
                 
-                <!-- خانة رابط الصورة -->
-                <input type="text" id="pImgUrl" class="full-width" placeholder="رابط صورة الجهاز من الإنترنت (أو اتركها فارغة لصورة افتراضية)">
+                <!-- خانة رفع الصورة الجديدة من الجهاز -->
+                <div class="file-input-container">
+                    <label>تحميل صورة الجهاز من جهازك الخاص:</label>
+                    <input type="file" id="pImgFile" accept="image/*">
+                </div>
             </div>
             <button class="add-btn" onclick="addNewProduct()">أنشر العرض الآن على المنصة 🚀</button>
         </div>
 
-        <!-- معرض السلع والتجهيزات المتاحة -->
-        <h2 style="float: right; width: 100%;">أحدث الأجهزة والتجهيزات المعروضة:</h2>
+        <h2>أحدث الأجهزة والتجهيزات المعروضة:</h2>
         <div class="products-grid" id="productsContainer">
             
-            <!-- عينة جهاز 1 جاهزة -->
+            <!-- منتج افتراضي -->
             <div class="product-card">
                 <img src="https://unsplash.com" class="product-img" alt="حاسوب">
                 <div class="product-info">
                     <div class="product-status status-new">جديد</div>
                     <h4 class="product-title">حاسوب Dell Core i7 احترافي للبرمجة</h4>
                     <div class="product-price">1850 د.ت</div>
-                    <div class="product-details">📍 تونس العاصمة | 📞 الهاتف: 21622334455</div>
+                    <div class="product-details">📍 تونس العاصمة | 📞 الهاتف: 22334455</div>
                     <div class="contact-buttons">
-                        <a href="tel:21622334455" class="btn-call">📞 إتصال</a>
-                        <a href="https://wa.me" target="_blank" class="btn-whatsapp">💬 واتساب</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- عينة جهاز 2 جاهزة -->
-            <div class="product-card">
-                <img src="https://unsplash.com" class="product-img" alt="شاشة">
-                <div class="product-info">
-                    <div class="product-status status-used">مستعمل</div>
-                    <h4 class="product-title">شاشة ألعاب قيمنق ASUS 24 بوصة 144Hz</h4>
-                    <div class="product-price">480 د.ت</div>
-                    <div class="product-details">📍 أريانة | 📞 الهاتف: 21699887766</div>
-                    <div class="contact-buttons">
-                        <a href="tel:21699887766" class="btn-call">📞 إتصال</a>
+                        <a href="tel:22334455" class="btn-call">📞 إتصال</a>
                         <a href="https://wa.me" target="_blank" class="btn-whatsapp">💬 واتساب</a>
                     </div>
                 </div>
@@ -122,45 +104,70 @@
 
     <script>
         function addNewProduct() {
-            var title = document.getElementById("pTitle").value;
-            var price = document.getElementById("pPrice").value;
-            var phone = document.getElementById("pPhone").value;
+            var title = document.getElementById("pTitle").value.trim();
+            var price = document.getElementById("pPrice").value.trim();
+            var phone = document.getElementById("pPhone").value.trim();
             var status = document.getElementById("pStatus").value;
             var location = document.getElementById("pLocation").value;
-            var imgUrl = document.getElementById("pImgUrl").value;
+            var fileInput = document.getElementById("pImgFile");
 
             if (title === "" || price === "" || phone === "") {
                 alert("الرجاء إدخال الإسم، السعر، ورقم الهاتف الأساسي! ⚠️");
                 return;
             }
 
-            // إذا لم يضع المستخدم رابط صورة، نضع صورة كمبيوتر افتراضية مجانية
-            if (imgUrl === "") {
-                imgUrl = "https://unsplash.com";
+            // تنظيف رقم الهاتف للواتساب (إزالة أي مقدمات زائدة والتأكد من الصيغة التونسية)
+            var whatsappPhone = phone;
+            if (!whatsappPhone.startsWith("216")) {
+                whatsappPhone = "216" + whatsappPhone;
             }
 
             var statusClass = (status === "جديد") ? "status-new" : "status-used";
 
-            // بناء بطاقة العرض الجديد مع دمج أزرار الإتصال والواتساب بالرقم المدخل
-            var newCard = `
-                <div class="product-card">
-                    <img src="${imgUrl}" class="product-img" alt="Product Image">
-                    <div class="product-info">
-                        <div class="product-status ${statusClass}">${status}</div>
-                        <h4 class="product-title">${title}</h4>
-                        <div class="product-price">${price} د.ت</div>
-                        <div class="product-details">📍 ${location} | 📞 الهاتف: ${phone}</div>
-                        <div class="contact-buttons">
-                            <a href="tel:${phone}" class="btn-call">📞 إتصال</a>
-                            <a href="https://wa.me{phone}" target="_blank" class="btn-whatsapp">💬 واتساب</a>
+            // دالة داخلية لإنشاء الكرت وعرضه بالصورة الصحيحة
+            function createCard(imageSrc) {
+                var newCard = `
+                    <div class="product-card">
+                        <img src="${imageSrc}" class="product-img" alt="Product Image">
+                        <div class="product-info">
+                            <div class="product-status ${statusClass}">${status}</div>
+                            <h4 class="product-title">${title}</h4>
+                            <div class="product-price">${price} د.ت</div>
+                            <div class="product-details">📍 ${location} | 📞 الهاتف: ${phone}</div>
+                            <div class="contact-buttons">
+                                <a href="tel:${phone}" class="btn-call">📞 إتصال</a>
+                                <a href="https://wa.me{whatsappPhone}" target="_blank" class="btn-whatsapp">💬 واتساب</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
 
-            var container = document.getElementById("productsContainer");
-            container.innerHTML = newCard + container.innerHTML;
+                var container = document.getElementById("productsContainer");
+                container.innerHTML = newCard + container.innerHTML;
 
-            // تنظيف الخانات بعد النشر بنجاح
-            document.getElementById("pTitle").value = "";
-            document.getElementById("pPrice").value = "";
+                // تصفير الخانات بعد الإضافة الناجحة
+                document.getElementById("pTitle").value = "";
+                document.getElementById("pPrice").value = "";
+                document.getElementById("pPhone").value = "";
+                document.getElementById("pImgFile").value = "";
+                
+                alert("🎉 تم نشر عرضك بنجاح على منصة CIAT informatique!");
+            }
+
+            // إذا اختار المستخدم ملف صورة من جهازه، نقوم بقراءته وعرضه
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    createCard(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                // صورة افتراضية في حال لم يتم اختيار صورة
+                var defaultImg = "https://unsplash.com";
+                createCard(defaultImg);
+            }
+        }
+    </script>
+
+</body>
+</html>
