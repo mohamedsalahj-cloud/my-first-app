@@ -5,55 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIAT informatique - بيع وشراء التجهيزات</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
-        header { background-color: #004085; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-size: 26px; font-weight: bold; }
+        /* الألوان الجديدة: كحلي داكن ورمادي فاخر */
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #2d3748; }
+        header { background-color: #1a202c; color: #ffffff; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .logo { font-size: 26px; font-weight: bold; color: #f7fafc; letter-spacing: 0.5px; }
         .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
         
-        .add-listing-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px; text-align: right; border-top: 4px solid #004085; }
-        .add-listing-box h3 { color: #004085; margin-top: 0; font-size: 20px; }
+        /* قسم إضافة إعلان جديد */
+        .add-listing-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 30px; text-align: right; border-top: 4px solid #2d3748; }
+        .add-listing-box h3 { color: #1a202c; margin-top: 0; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 10px; }
         .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .form-group input, .form-group select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; width: 100%; box-sizing: border-box; }
-        .form-group input:focus, .form-group select:focus { border-color: #004085; }
+        .form-group input, .form-group select, .form-group textarea { padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 15px; outline: none; width: 100%; box-sizing: border-box; background-color: #fcfcfc; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #4a5568; background-color: #fff; }
+        
+        .full-width { grid-column: 1 / -1; }
         
         /* تنسيق خانة رفع الملفات والصور */
         .file-input-container { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px; }
-        .file-input-container label { font-weight: bold; color: #555; font-size: 14px; }
-        .file-input-container input[type="file"] { padding: 8px; border: 1px dashed #004085; background: #f8f9fa; cursor: pointer; }
+        .file-input-container label { font-weight: bold; color: #4a5568; font-size: 14px; }
+        .file-input-container input[type="file"] { padding: 10px; border: 1px dashed #718096; background: #f7fafc; cursor: pointer; border-radius: 8px; }
 
-        .add-btn { background-color: #28a745; color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; display: block; width: 100%; margin-top: 10px; }
-        .add-btn:hover { background-color: #218838; }
+        .add-btn { background-color: #2d3748; color: white; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; display: block; width: 100%; margin-top: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .add-btn:hover { background-color: #1a202c; }
 
-        h2 { text-align: right; color: #2c3e50; border-bottom: 3px solid #004085; padding-bottom: 8px; display: inline-block; margin-top: 10px; }
+        /* معرض السلع والتجهيزات */
+        h2 { text-align: right; color: #1a202c; border-bottom: 3px solid #4a5568; padding-bottom: 8px; display: inline-block; margin-top: 10px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 25px; margin-top: 20px; }
-        .product-card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; text-align: right; border: 1px solid #eee; }
-        .product-img { height: 200px; width: 100%; object-fit: cover; background-color: #eaeff2; }
-        .product-info { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
-        .product-title { font-size: 18px; font-weight: bold; margin: 0 0 10px 0; color: #2c3e50; min-height: 44px; }
-        .product-status { inline-size: max-content; padding: 3px 10px; font-size: 12px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; }
-        .status-new { background-color: #d4edda; color: #155724; }
-        .status-used { background-color: #fff3cd; color: #856404; }
-        .product-price { font-size: 22px; color: #e2001a; font-weight: bold; margin-bottom: 8px; }
-        .product-details { font-size: 13px; color: #666; margin-bottom: 15px; }
+        .product-card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; display: flex; flex-direction: column; text-align: right; border: 1px solid #e2e8f0; transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .product-img { height: 200px; width: 100%; object-fit: cover; background-color: #edf2f7; }
         
+        .product-info { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 18px; font-weight: bold; margin: 0 0 5px 0; color: #1a202c; }
+        .cpu-badge { display: inline-block; background-color: #edf2f7; color: #4a5568; padding: 3px 8px; font-size: 13px; border-radius: 4px; font-weight: 500; margin-bottom: 10px; width: max-content; }
+        .product-status { inline-size: max-content; padding: 3px 10px; font-size: 12px; border-radius: 6px; font-weight: bold; margin-bottom: 12px; }
+        .status-new { background-color: #c6f6d5; color: #22543d; }
+        .status-used { background-color: #feebc8; color: #744210; }
+        .product-price { font-size: 22px; color: #2d3748; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px; }
+        .product-description { font-size: 14px; color: #4a5568; margin-bottom: 15px; line-height: 1.6; background: #f7fafc; padding: 10px; border-radius: 6px; flex-grow: 1; }
+        .product-details { font-size: 13px; color: #718096; margin-bottom: 15px; }
+        
+        /* أزرار الاتصال المحسنة */
         .contact-buttons { display: flex; gap: 10px; margin-top: auto; }
-        .btn-call { flex: 1; background-color: #007bff; color: white; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; }
-        .btn-whatsapp { flex: 1; background-color: #25d366; color: white; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .btn-call { flex: 1; background-color: #4a5568; color: white; text-align: center; padding: 11px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .btn-call:hover { background-color: #2d3748; }
+        .btn-whatsapp { flex: 1; background-color: #25d366; color: white; text-align: center; padding: 11px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .btn-whatsapp:hover { background-color: #1ebd56; }
+        
+        footer { text-align: center; margin-top: 60px; font-size: 13px; color: #a0aec0; padding: 25px; background: #fff; border-top: 1px solid #edf2f7; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">💻 CIAT informatique</div>
-        <div style="font-weight: bold;">منصتكم لشراء وبيع التجهيزات والالكترونيات 🇹🇳</div>
+        <div style="font-weight: 500;">منصتكم الاحترافية لشراء وبيع التجهيزات 🇹🇳</div>
     </header>
 
     <div class="container">
         
+        <!-- قسم إضافة التجهيزات والإعلانات -->
         <div class="add-listing-box">
             <h3>➕ أضف عرضاً جديداً في منصة CIAT informatique</h3>
             <div class="form-group">
-                <input type="text" id="pTitle" placeholder="اسم الجهاز (مثال: حاسوب محمول HP)">
+                <input type="text" id="pTitle" placeholder="اسم الجهاز (مثال: حاسوب محمول HP ProBook)">
+                <input type="text" id="pCpu" placeholder="نوعية المعالج (مثال: Intel Core i5 أو Ryzen 7)">
                 <input type="number" id="pPrice" placeholder="السعر بالدينار التونسي (د.ت)">
                 <input type="text" id="pPhone" placeholder="رقم الهاتف بدون فواصل (مثال: 22113344)">
                 
@@ -68,7 +84,10 @@
                     <option value="صفاقس">صفاقس</option>
                 </select>
                 
-                <!-- خانة رفع الصورة الجديدة من الجهاز -->
+                <!-- خانة وصف الحاسوب الجديدة -->
+                <textarea id="pDesc" class="full-width" rows="3" placeholder="وصف تفصيلي للحاسوب (مثال: الرام 16 جيجا، الشاشة 15.6 بوصة، البطارية ممتازة...)"></textarea>
+                
+                <!-- خانة رفع الصورة من الجهاز -->
                 <div class="file-input-container">
                     <label>تحميل صورة الجهاز من جهازك الخاص:</label>
                     <input type="file" id="pImgFile" accept="image/*">
@@ -80,13 +99,15 @@
         <h2>أحدث الأجهزة والتجهيزات المعروضة:</h2>
         <div class="products-grid" id="productsContainer">
             
-            <!-- منتج افتراضي -->
+            <!-- منتج افتراضي كنموذج للمظهر الجديد -->
             <div class="product-card">
                 <img src="https://unsplash.com" class="product-img" alt="حاسوب">
                 <div class="product-info">
                     <div class="product-status status-new">جديد</div>
-                    <h4 class="product-title">حاسوب Dell Core i7 احترافي للبرمجة</h4>
+                    <h4 class="product-title">حاسوب Dell Latitude ذكي للعمل والبرمجة</h4>
+                    <div class="cpu-badge">⚙️ المعالج: Intel Core i7</div>
                     <div class="product-price">1850 د.ت</div>
+                    <div class="product-description">حاسوب سريع جداً، يحتوي على رام 16 جيجا وقرص صلب 512GB SSD. شاشة عالية الدقة ومناسب جداً للمهندسين والمبرمجين.</div>
                     <div class="product-details">📍 تونس العاصمة | 📞 الهاتف: 22334455</div>
                     <div class="contact-buttons">
                         <a href="tel:22334455" class="btn-call">📞 إتصال</a>
@@ -105,8 +126,10 @@
     <script>
         function addNewProduct() {
             var title = document.getElementById("pTitle").value.trim();
+            var cpu = document.getElementById("pCpu").value.trim();
             var price = document.getElementById("pPrice").value.trim();
             var phone = document.getElementById("pPhone").value.trim();
+            var desc = document.getElementById("pDesc").value.trim();
             var status = document.getElementById("pStatus").value;
             var location = document.getElementById("pLocation").value;
             var fileInput = document.getElementById("pImgFile");
@@ -116,7 +139,11 @@
                 return;
             }
 
-            // تنظيف رقم الهاتف للواتساب (إزالة أي مقدمات زائدة والتأكد من الصيغة التونسية)
+            // في حال عدم كتابة معالج أو وصف، يتم وضع قيم افتراضية حتى لا تظهر الخانات فارغة
+            if(cpu === "") { cpu = "غير محدد"; }
+            if(desc === "") { desc = "لا يوجد وصف إضافي متوفر لهذا الجهاز."; }
+
+            // تنظيف رقم الهاتف للواتساب بالتأكد من المفتاح الدولي التونسي
             var whatsappPhone = phone;
             if (!whatsappPhone.startsWith("216")) {
                 whatsappPhone = "216" + whatsappPhone;
@@ -124,50 +151,7 @@
 
             var statusClass = (status === "جديد") ? "status-new" : "status-used";
 
-            // دالة داخلية لإنشاء الكرت وعرضه بالصورة الصحيحة
             function createCard(imageSrc) {
                 var newCard = `
                     <div class="product-card">
                         <img src="${imageSrc}" class="product-img" alt="Product Image">
-                        <div class="product-info">
-                            <div class="product-status ${statusClass}">${status}</div>
-                            <h4 class="product-title">${title}</h4>
-                            <div class="product-price">${price} د.ت</div>
-                            <div class="product-details">📍 ${location} | 📞 الهاتف: ${phone}</div>
-                            <div class="contact-buttons">
-                                <a href="tel:${phone}" class="btn-call">📞 إتصال</a>
-                                <a href="https://wa.me{whatsappPhone}" target="_blank" class="btn-whatsapp">💬 واتساب</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                var container = document.getElementById("productsContainer");
-                container.innerHTML = newCard + container.innerHTML;
-
-                // تصفير الخانات بعد الإضافة الناجحة
-                document.getElementById("pTitle").value = "";
-                document.getElementById("pPrice").value = "";
-                document.getElementById("pPhone").value = "";
-                document.getElementById("pImgFile").value = "";
-                
-                alert("🎉 تم نشر عرضك بنجاح على منصة CIAT informatique!");
-            }
-
-            // إذا اختار المستخدم ملف صورة من جهازه، نقوم بقراءته وعرضه
-            if (fileInput.files && fileInput.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    createCard(e.target.result);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                // صورة افتراضية في حال لم يتم اختيار صورة
-                var defaultImg = "https://unsplash.com";
-                createCard(defaultImg);
-            }
-        }
-    </script>
-
-</body>
-</html>
